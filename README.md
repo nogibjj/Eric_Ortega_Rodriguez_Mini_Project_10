@@ -1,37 +1,23 @@
-[![CI](https://github.com/nogibjj/python-ruff-template/actions/workflows/cicd.yml/badge.svg)](https://github.com/nogibjj/python-ruff-template/actions/workflows/cicd.yml)
-## Template for Python projects with RUFF linter
+# PySpark Data Processing Project
+# Mini Project 10 
+## Eric Ortega Rodriguez 
 
-![1 15_rust_built_python_tools](https://github.com/nogibjj/python-ruff-template/assets/58792/db5f7bda-a977-4c67-acbe-a70fe034fbdf)
+This repository contains a PySpark-based project for data processing on a large dataset, developed as part of an assignment. The project utilizes Spark SQL for querying and data transformation.
 
+## Requirements
 
+- Use PySpark to perform data processing on a large dataset.
+- Include at least one Spark SQL query and one data transformation.
 
-1. First thing to do on launch is to open a new shell and verify virtualenv is sourced.
+## Deliverables
 
-Things included are:
+- **PySpark Script:** The main script used for data processing.
+- **Output Data or Summary Report** (PDF or Markdown): A report or summary of the results obtained from the data processing.
 
-* `Makefile`
+## Setup Instructions
 
-* `Pytest`
-
-* `pandas`
-
-* `Ruff`:  
-
-Run `make lint` which runs `ruff check`.  You can find out more info on [Ruff here](https://github.com/astral-sh/ruff).
-
-* `Dockerfile`
-
-* `GitHub copilot`
-
-* `jupyter` and `ipython` 
-
-* A base set of libraries for devops and web
-
-* `githubactions`
-
-## References
-
-![1 1-function-essence-of-programming](https://github.com/nogibjj/python-ruff-template/assets/58792/f7f33cd3-cff5-4014-98ea-09b6a29c7557)
-
-
-
+To set up the environment and run the PySpark script:
+1. Clone the repository:
+   ```bash
+   git clone <repository-url>
+   cd <repository-directory>
