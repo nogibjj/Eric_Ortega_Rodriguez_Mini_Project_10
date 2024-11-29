@@ -2,6 +2,10 @@
 
 # **PySpark Data Processing Project**
 
+<div align="center">
+    <img src="image.png" alt="Project Image">
+</div>
+
 ## **Mini Project 10**
 ### **Eric Ortega Rodriguez**
 
