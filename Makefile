@@ -1,12 +1,16 @@
 # Use bash for compatibility with `source` if needed
 SHELL := /bin/bash
 
-# Create and install dependencies in a virtual environment
 install:
 	@echo "Creating a virtual environment..."
 	python3 -m venv venv && . venv/bin/activate &&\
 		pip install --upgrade pip &&\
 		pip install -r requirements.txt
+
+lint:
+	@echo "Running Ruff for linting..."
+	. venv/bin/activate && ruff check --fix *.py mylib/*.py
+
 
 # Run tests with pytest and generate a coverage report
 test:
