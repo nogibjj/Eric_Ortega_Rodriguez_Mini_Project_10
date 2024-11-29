@@ -1,4 +1,4 @@
-from lib import (
+from mylib.lib import (
     extract,
     load_data,
     describe,
@@ -7,6 +7,7 @@ from lib import (
     start_spark,
     end_spark,
 )
+
 
 
 def main():

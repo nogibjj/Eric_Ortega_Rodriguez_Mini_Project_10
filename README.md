@@ -3,7 +3,7 @@
 # **PySpark Data Processing Project**
 
 <div align="center">
-    <img src="image.png" alt="Project Image">
+    <img src="image.png" alt="Project Image" width="400">
 </div>
 
 ## **Mini Project 10**
