@@ -1,7 +1,3 @@
-"""
-Main CLI or app entry point
-"""
-
 from lib import (
     extract,
     load_data,
@@ -14,19 +10,33 @@ from lib import (
 
 
 def main():
-    # Extract data path
+    """
+    Main entry point for the PySpark CLI application.
+    """
+    # Step 1: Extract data path (assumes your extract function fetches a valid path)
     data_path = extract()
-    
-    # Start Spark session
+    if not data_path:
+        print("Error: Data path not found.")
+        return
+
+    # Step 2: Start Spark session
     spark = start_spark("PhoneDataProcessing")
-    
-    # Load data into DataFrame
+    print("Spark session started successfully.")
+
+    # Step 3: Load data into a Spark DataFrame
     df = load_data(spark, data=data_path)
-    
-    # Describe the data (example metric)
+    if df is None:
+        print("Error: Failed to load data.")
+        end_spark(spark)
+        return
+    print("Data loaded successfully into Spark DataFrame.")
+
+    # Step 4: Describe the data (generate summary statistics or schema)
+    print("Describing the dataset...")
     describe(df)
-    
-    # SQL Query: Calculate average price in USD per brand
+
+    # Step 5: SQL Query - Calculate average price in USD per phone brand
+    print("Running SQL query for average price per brand...")
     query(
         spark,
         df,
@@ -36,16 +46,20 @@ def main():
         GROUP BY phone_brand
         ORDER BY avg_price_usd DESC
         """,
-        "phone_data"
+        table_name="phone_data",
     )
-    
-    # Example Transform: Filter high-priced phones and select relevant columns
-    example_transform(
-        df.filter(df.price_range == "high price").select("phone_brand", "phone_model", "price_USD", "store")
+
+    # Step 6: Example Transformation - Filter and select specific columns
+    print("Applying transformation: Filtering high-priced phones...")
+    high_price_phones = (
+        df.filter(df.price_range == "high price")
+        .select("phone_brand", "phone_model", "price_USD", "store")
     )
-    
-    # End Spark session
+    example_transform(high_price_phones)
+
+    # Step 7: End Spark session
     end_spark(spark)
+    print("Spark session ended. Processing completed successfully.")
 
 
 if __name__ == "__main__":
