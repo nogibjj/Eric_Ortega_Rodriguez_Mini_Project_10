@@ -8,9 +8,11 @@ def extract():
     Validates the existence of the dataset file.
     """
     # Path to the dataset
-    path = "ericortega/Eric_Ortega_Rodriguez_Mini_Project_10/data/processed_data_news.csv"
-    
-    # Check if the file exists
+def extract():
+    path = (
+        "/workspaces/Eric_Ortega_Rodriguez_Mini_Project_10/data/"
+        "processed_data_news.csv"
+    )
     if not os.path.exists(path):
         raise FileNotFoundError(f"Dataset not found at: {path}")
     return path
