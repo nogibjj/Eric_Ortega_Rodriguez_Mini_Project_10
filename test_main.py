@@ -5,10 +5,7 @@ from mylib.lib import (
     load_data,
     describe,
     query,
-    start_spark,
-    end_spark,
 )
-
 
 def test_extract():
     """
