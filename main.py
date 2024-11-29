@@ -1,39 +1,9 @@
-from reportlab.lib.pagesizes import letter
-from reportlab.pdfgen import canvas
 from mylib.lib import (
     load_data,
-    describe,
     query,
-    example_transform,
     start_spark,
     end_spark,
 )
-
-
-def generate_pdf(output_file, steps_output):
-    """
-    Generate a PDF report summarizing the outputs of each step.
-    """
-    c = canvas.Canvas(output_file, pagesize=letter)
-    c.setFont("Helvetica", 10)
-
-    # Add a title
-    c.drawString(30, 750, "PySpark Data Processing Report")
-    c.drawString(30, 735, "-" * 50)
-
-    y_position = 715
-    for step, output in steps_output.items():
-        if y_position < 50:  # Create a new page if content overflows
-            c.showPage()
-            y_position = 750
-        c.drawString(30, y_position, f"Step: {step}")
-        y_position -= 15
-        for line in output.split("\n"):
-            c.drawString(30, y_position, line[:95])  # Wrap long lines
-            y_position -= 12
-
-    c.save()
-    print(f"PDF report generated: {output_file}")
 
 
 def main():
@@ -67,13 +37,6 @@ def main():
             return
         steps_output["Loading Data"] = "Data loaded successfully into Spark DataFrame."
 
-        # Step 4: Describe the data (generate summary statistics or schema)
-        print("Describing the dataset...")
-        schema_output = []
-        df.printSchema(lambda line: schema_output.append(line))
-        sample_data_output = df.show(5, truncate=False)
-        steps_output["Describing Dataset"] = f"Schema:\n{schema_output}\nSample Data:\n{sample_data_output}"
-
         # Step 5: SQL Query - Calculate average price in USD per phone brand
         print("Running SQL query for average price per brand...")
         query_output = query(
@@ -89,15 +52,6 @@ def main():
         )
         steps_output["SQL Query"] = query_output
 
-        # Step 6: Example Transformation - Filter and select specific columns
-        print("Applying transformation: Filtering high-priced phones...")
-        high_price_phones = (
-            df.filter(df.price_range == "high price")
-            .select("phone_brand", "phone_model", "price_USD", "store")
-        )
-        transform_output = high_price_phones.show(5, truncate=False)
-        steps_output["Data Transformation"] = f"Transformed Data:\n{transform_output}"
-
     except Exception as e:
         steps_output["Error"] = f"An error occurred: {e}"
         print(f"An error occurred: {e}")
@@ -109,12 +63,10 @@ def main():
             print("Spark session ended. Processing completed successfully.")
             steps_output["Ending Spark Session"] = "Spark session ended successfully."
 
-        # Generate the PDF report
-        generate_pdf(output_file, steps_output)
-
 
 if __name__ == "__main__":
     main()
+
 # from mylib.lib import (
 #     load_data,
 #     describe,
