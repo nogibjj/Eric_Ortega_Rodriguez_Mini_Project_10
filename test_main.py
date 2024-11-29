@@ -1,39 +1,55 @@
 import os
+import pytest
 from pyspark.sql import SparkSession
 from mylib.lib import (
-    extract,
     load_data,
     describe,
     query,
 )
 
-def test_extract():
+
+@pytest.fixture
+def mock_extract(monkeypatch, tmp_path):
     """
-    Test if the extract function returns a valid path.
+    Mocks the extract function to return a temporary CSV file.
     """
-    path = extract()
+    test_file = tmp_path / "test_data.csv"
+    test_file.write_text("phone_brand,price_USD,price_range\nApple,999,high price\nSamsung,799,medium price\n")
+
+    def mock_return():
+        return str(test_file)
+
+    monkeypatch.setattr("mylib.lib.extract", mock_return)
+    return str(test_file)
+
+
+def test_extract(mock_extract):
+    """
+    Test if the mock extract function returns a valid path.
+    """
+    path = mock_extract
     assert isinstance(path, str), "Extracted path is not a string."
     assert os.path.exists(path), f"Path does not exist: {path}"
 
 
-def test_load_data():
+def test_load_data(mock_extract):
     """
     Test if data loads correctly into a DataFrame.
     """
     spark = SparkSession.builder.appName("TestSession").getOrCreate()
-    path = extract()
+    path = mock_extract
     df = load_data(spark, data=path)
     assert df is not None, "DataFrame is None."
     assert df.count() > 0, "DataFrame is empty."
     spark.stop()
 
 
-def test_query():
+def test_query(mock_extract):
     """
     Test the query function with a sample SQL query.
     """
     spark = SparkSession.builder.appName("TestSession").getOrCreate()
-    path = extract()
+    path = mock_extract
     df = load_data(spark, data=path)
 
     # Run a sample query
@@ -50,12 +66,12 @@ def test_query():
     spark.stop()
 
 
-def test_describe():
+def test_describe(mock_extract):
     """
     Test the describe function to ensure it outputs the schema correctly.
     """
     spark = SparkSession.builder.appName("TestSession").getOrCreate()
-    path = extract()
+    path = mock_extract
     df = load_data(spark, data=path)
 
     # Capture describe output (no assertions since it's visual)
