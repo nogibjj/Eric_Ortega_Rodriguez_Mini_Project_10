@@ -57,3 +57,8 @@ The transformation results are processed and displayed using the `example_transf
 
 ### **Step 7: End Spark Session**
 Finally, the script ends the Spark session with `end_spark`, releasing all resources and ensuring the session is properly terminated.
+
+
+### **Output Report**
+
+The generated output report summarizing the results of the data processing can be found [here](https://github.com/nogibjj/Eric_Ortega_Rodriguez_Mini_Project_10/blob/main/output_report.pdf).
