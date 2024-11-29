@@ -9,7 +9,9 @@ def mock_extract(monkeypatch, tmp_path):
     """Mock the extract function to return a temporary test CSV file."""
     test_file = tmp_path / "test_data.csv"
     test_file.write_text(
-        "phone_brand,price_USD,price_range\nApple,999,high price\nSamsung,799,medium price\n"
+        "phone_brand,price_USD,price_range\n"
+        "Apple,999,high price\n"
+        "Samsung,799,medium price\n"
     )
     monkeypatch.setattr("mylib.lib.extract", lambda: str(test_file))
     return str(test_file)
