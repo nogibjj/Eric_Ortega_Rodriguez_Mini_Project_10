@@ -1,48 +1,41 @@
-# Use bash for compatibility with `source` if needed
-SHELL := /bin/bash
-
 install:
-	@echo "Creating a virtual environment..."
-	python3 -m venv venv && . venv/bin/activate &&\
-		pip install --upgrade pip &&\
+	pip install --upgrade pip &&\
 		pip install -r requirements.txt
 
+format:	
+	black *.py 
+
 lint:
-	@echo "Running Ruff for linting..."
-	. venv/bin/activate && ruff check --fix *.py mylib/*.py
+	#disable comment to test speed
+	#pylint --disable=R,C --ignore-patterns=test_.*?py *.py mylib/*.py
+	#ruff linting is 10-100X faster than pylint
+	ruff check *.py mylib/*.py
 
-
-# Run tests with pytest and generate a coverage report
 test:
-	@echo "Running tests with coverage..."
-	python -m pytest -vv --cov=main --cov=mylib --cov-report=html test_*.py
-	@echo "Coverage report generated in ./htmlcov/index.html"
+	python -m pytest -vv -cov=mylib test_*.py
 
-# Format Python code using black
-format:
-	@echo "Formatting code with black..."
-	black .
-
-# Lint Python code using ruff
-lint:
-	@echo "Running Ruff for linting..."
-	ruff check --fix *.py mylib/*.py
-
-# Lint the Dockerfile using hadolint
 container-lint:
-	@echo "Linting Dockerfile with hadolint..."
 	docker run --rm -i hadolint/hadolint < Dockerfile
 
-# Run both formatting and linting
-validate: format lint
+refactor: format lint
 
-# Placeholder for deployment steps
 deploy:
-	@echo "Deployment script goes here"
+	#deploy goes here
+		
+all: install lint test format deploy
+	python main.py
 
-# Run all necessary steps
-all: install lint test format
-
+generate_and_push:
+	# Add, commit, and push the generated files to GitHub
+	@if [ -n "$$(git status --porcelain)" ]; then \
+		git config --local user.email "action@github.com"; \
+		git config --local user.name "GitHub Action"; \
+		git add .; \
+		git commit -m "Add output log"; \
+		git push; \
+	else \
+		echo "No changes to commit. Skipping commit and push."; \
+	fi
 
 
 # install:
