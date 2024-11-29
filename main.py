@@ -1,5 +1,4 @@
 from mylib.lib import (
-    extract,
     load_data,
     describe,
     query,
@@ -8,18 +7,18 @@ from mylib.lib import (
     end_spark,
 )
 
+
 def main():
     """
     Main entry point for the PySpark CLI application.
     """
     try:
-        # Step 1: Extract data path (assumes your extract function fetches a valid path)
+        # Step 1: Hardcoded data path
         print("Extracting data path...")
-        data_path = "ericortega/Eric_Ortega_Rodriguez_Mini_Project_10/data/processed_data_news.csv"
-        
-        if not data_path:
-            print("Error: Data path not found.")
-            return
+        data_path = (
+            "ericortega/Eric_Ortega_Rodriguez_Mini_Project_10/data/"
+            "processed_data_news.csv"
+        )
 
         # Step 2: Start Spark session
         spark = start_spark("PhoneDataProcessing")
@@ -72,6 +71,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 # from mylib.lib import (
 #     extract,
